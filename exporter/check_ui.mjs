@@ -42,7 +42,7 @@ const problems = [];
 for (const [form, [width, height, mobile]] of Object.entries(sizes)) {
   await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile });
   for (const theme of ["dark", "light"]) {
-    for (const v of ["overview", "map", "model", "research", "about"]) {
+    for (const v of ["overview", "telemetry", "map", "model", "research", "about"]) {
       await send("Page.navigate", { url: `${base}/index.html?theme=${theme}&r=${Date.now()}#${v}` });
       await sleep(900);
       const facts = JSON.parse(await evaluate(`JSON.stringify({
@@ -67,14 +67,30 @@ for (const [form, [width, height, mobile]] of Object.entries(sizes)) {
 await send("Emulation.setDeviceMetricsOverride", { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
 await send("Page.navigate", { url: `${base}/index.html#model` });
 await sleep(900);
-const picked = await evaluate(`(document.querySelector('[data-table="ext.observation"]').click(), document.querySelector('.model h2').textContent)`);
+const picked = await evaluate(`(document.querySelector('[data-table="ext.observation"]').click(), document.querySelector('.table-title').textContent)`);
 if (picked !== "ext.observation") problems.push("table selection did not update the panel: " + picked);
+// The diagram must draw a line for every published reference, on phone and desktop.
+const lines = await evaluate(`document.querySelectorAll('#er-lines path').length`);
+if (!lines) problems.push("data model diagram drew no relationship lines");
+// The telemetry timeline must draw a mark per service and job.
+await send("Page.navigate", { url: `${base}/index.html#telemetry` });
+await sleep(900);
+const marks = await evaluate(`document.querySelectorAll('.timeline g').length`);
+if (marks < 5) problems.push("telemetry timeline drew too few marks: " + marks);
 await send("Page.navigate", { url: `${base}/index.html?embed=1#overview` });
 await sleep(900);
 const embed = await evaluate(`getComputedStyle(document.querySelector('.brand')).display`);
 if (embed !== "none") problems.push("embed mode still shows the brand block");
 const shot = await send("Page.captureScreenshot", { format: "png" });
 writeFileSync(join(out, "embed.png"), Buffer.from(shot.data, "base64"));
+// Narrow embed: cells holding a time or a number must stay on one line.
+await send("Emulation.setDeviceMetricsOverride", { width: 320, height: 700, deviceScaleFactor: 1, mobile: true });
+await send("Page.navigate", { url: `${base}/index.html?embed=1#overview` });
+await sleep(900);
+const wrapped = await evaluate(`[...document.querySelectorAll('.job-time,.stat-value')].filter(e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().height > 1.5 * parseFloat(getComputedStyle(e).lineHeight); }).length`);
+if (wrapped) problems.push("narrow embed: " + wrapped + " number cells wrapped");
+const narrowOver = await evaluate(`document.documentElement.scrollWidth - innerWidth`);
+if (narrowOver > 0) problems.push("narrow embed scrolls sideways by " + narrowOver + "px");
 
 const realErrors = errors.filter((e) => !/fonts\.g/.test(e));
 console.log(JSON.stringify({ problems, errors: realErrors }, null, 1));
