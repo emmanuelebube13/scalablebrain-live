@@ -63,12 +63,15 @@
     var systems = d.systems || [];
     var bad = systems.filter(function (s) { return s.status === "fault"; }).length;
     var warn = systems.filter(function (s) { return s.status === "warn" || s.status === "unknown"; }).length;
-    var tone = bad ? "fault" : warn ? "warn" : "ok";
+    var jobIssues = (d.scheduler || []).filter(function (j) { return j.status === "warn"; }).length;
+    var tone = bad ? "fault" : warn || jobIssues ? "warn" : "ok";
     var text = bad
       ? "A system has a fault"
-      : warn ? "A system needs attention" : "All systems are running normally";
-    var why = bad || warn
-      ? "This is the real state of the system. Faults stay visible here until they are fixed."
+      : warn ? "A system needs attention"
+      : jobIssues ? "Core systems are running, but a scheduled job needs attention"
+      : "All systems are running normally";
+    var why = bad || warn || jobIssues
+      ? "This is the real state of the system. Problems stay visible here until they are fixed."
       : (d.market && d.market.open ? "The market is open." : "The market is closed, so no new candles are expected.");
 
     var systemCards = systems.map(function (s) {

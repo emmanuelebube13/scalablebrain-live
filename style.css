@@ -32,7 +32,8 @@ p { margin: 0 0 12px; }
 .brand-mark::after {
   content: ""; position: absolute; inset: 6px; border-radius: 50%; background: rgb(var(--accent));
 }
-.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav { display: flex; flex-direction: column; gap: 2px; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
 .nav a {
   display: flex; align-items: center; min-height: 44px; padding: 0 10px; border-radius: 8px;
   color: rgb(var(--text-dim)); text-decoration: none; font-weight: 500;
