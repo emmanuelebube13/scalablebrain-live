@@ -1,0 +1,73 @@
+/*
+ * ScalableBrain design tokens.
+ * Source of truth: Scalablebrainfullarchitecture/DESIGN-SYSTEM.md section 3. Change that file first,
+ * then regenerate this one. Three byte-identical copies must exist:
+ *   telemetry-dashboard/src/styles/tokens.css
+ *   control-panel/web/src/styles/tokens.css
+ *   Scalablebrainfullarchitecture/assets/css/tokens.css
+ *
+ * Values are space-separated RGB channels so a token works at any alpha:
+ *   plain CSS   color: rgb(var(--good));   background: rgb(var(--bad) / 0.12);
+ *   Tailwind    colors: { good: 'rgb(var(--good) / <alpha-value>)' }  ->  text-good, bg-bad/10
+ *
+ * Dark is the default. Light is one attribute on <html>: data-theme="light".
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* 3.1 Surfaces, text, lines */
+  --bg:             11 15 20;    /* #0B0F14  Page background */
+  --surface:        17 22 29;    /* #11161D  Cards, sidebar, top bar, panels */
+  --surface-raised: 23 29 38;    /* #171D26  Hover, nested rows, popovers */
+  --surface-sunken: 8 11 15;     /* #080B0F  Inputs, code blocks, wells */
+  --border:         35 43 54;    /* #232B36  Default 1 px lines */
+  --border-strong:  51 64 80;    /* #334050  Focus-adjacent, dividers that matter */
+  --text:           230 234 240; /* #E6EAF0  Primary text */
+  --text-dim:       167 176 190; /* #A7B0BE  Secondary text */
+  --text-faint:     107 118 134; /* #6B7686  Meta, placeholders (never for numbers that matter) */
+
+  /* 3.2 Meaning (one meaning each) */
+  --good:           52 211 153;  /* #34D399  Healthy, passing, profit */
+  --bad:            248 113 113; /* #F87171  Fault, failing, loss, blocked */
+  --warn:           251 191 36;  /* #FBBF24  Needs attention soon, degraded, stale */
+  --accent:         34 211 238;  /* #22D3EE  Interactive, selected, links, informational */
+  --neutral:        148 163 184; /* #94A3B8  Absent, unknown, market closed, disabled */
+
+  /* 3.3 Identity (labels only, always with the name) */
+  --s1:             129 140 248; /* #818CF8  System 1 - Brain */
+  --s2:             244 114 182; /* #F472B6  System 2 - Hand */
+  --s3:             192 132 252; /* #C084FC  System 3 - Guardian */
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* 3.1 Surfaces, text, lines
+     2026-11-02 (owner: "too light to use, and it doesn't blend in"): the page was
+     near-white under white cards, so nothing separated. Now a grey-blue page with
+     off-white cards on it (1.28:1 card vs page, was ~1.1), no pure white anywhere,
+     and lines two steps darker. */
+  --bg:             213 220 229; /* #D5DCE5  Page background */
+  --surface:        244 246 249; /* #F4F6F9  Cards, sidebar, top bar, panels */
+  --surface-raised: 232 236 241; /* #E8ECF1  Hover, nested rows, popovers */
+  --surface-sunken: 221 227 234; /* #DDE3EA  Inputs, code blocks, wells */
+  --border:         180 191 204; /* #B4BFCC  Default 1 px lines */
+  --border-strong:  142 155 173; /* #8E9BAD  Focus-adjacent, dividers that matter */
+  --text:           15 23 42;    /* #0F172A  Primary text */
+  --text-dim:       51 65 85;    /* #334155  Secondary text */
+  --text-faint:     74 85 104;   /* #4A5568  Meta, placeholders (never for numbers that matter) */
+
+  /* 3.2 Meaning (one meaning each). Every value is >= 4.8:1 (WCAG AA, small text)
+     on bg, surface, surface-raised and surface-sunken (checked 2026-11-02). */
+  --good:           5 102 63;    /* #05663F  Healthy, passing, profit */
+  --bad:            180 32 32;   /* #B42020  Fault, failing, loss, blocked */
+  --warn:           143 65 6;    /* #8F4106  Needs attention soon, degraded, stale */
+  --accent:         10 94 117;   /* #0A5E75  Interactive, selected, links, informational */
+  --neutral:        77 91 110;   /* #4D5B6E  Absent, unknown, market closed, disabled */
+
+  /* 3.3 Identity (labels only, always with the name) */
+  --s1:             55 48 163;   /* #3730A3  System 1 - Brain */
+  --s2:             163 22 79;   /* #A3164F  System 2 - Hand */
+  --s3:             107 33 168;  /* #6B21A8  System 3 - Guardian */
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scalable Brain live</title>
+<meta name="description" content="A live public view of a quantitative research and trading platform: system health, data model and research record.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='black'/><circle cx='16' cy='16' r='7' fill='white'/></svg>">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="#overview">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span><strong>Scalable Brain</strong><small>Live system view</small></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#overview" data-view="overview">Overview</a>
+      <a href="#map" data-view="map">System map</a>
+      <a href="#model" data-view="model">Data model</a>
+      <a href="#research" data-view="research">Research</a>
+      <a href="#about" data-view="about">About</a>
+    </nav>
+    <p class="side-note">Real system. Practice account. Read only.</p>
+  </aside>
+  <div class="content">
+    <header class="topbar">
+      <div id="freshness" class="freshness" role="status" aria-live="polite">Loading live data</div>
+      <button id="theme" class="ghost" type="button">Light theme</button>
+    </header>
+    <main id="view" tabindex="-1"></main>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
